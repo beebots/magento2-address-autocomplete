@@ -1,6 +1,7 @@
 <?php
 /** @var $block BeeBots\AdminOrder\Block\Adminhtml\Order\Create\AddressAutocomplete */
 ?>
+<?php if ($block->isAutocompleteEnabled()):?>
 <script type="text/javascript">
     require(['jquery', 'order-address-autocomplete'], function($, orderAddressAutocomplete){
         $.getScript(
@@ -9,3 +10,4 @@
         );
     });
 </script>
+<?php endif;?>

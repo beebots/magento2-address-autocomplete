@@ -40,4 +40,14 @@ class AddressAutocomplete extends Template
     {
         return $this->scopeConfig->getValue('beebots/address_autocomplete/google_maps_api_key');
     }
+
+    /**
+     * Function: isAutocompleteEnabled
+     *
+     * @return mixed
+     */
+    public function isAutocompleteEnabled()
+    {
+        return $this->scopeConfig->getValue('beebots/address_autocomplete/enabled');
+    }
 }

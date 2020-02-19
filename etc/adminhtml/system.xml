@@ -10,6 +10,11 @@
             <resource>BeeBots_AddressAutocomplete::config</resource>
             <group id="address_autocomplete" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Bee Bots Address Autocomplete Configuration</label>
+                <field id="enabled" translate="label" sortOrder="1" type="select" showInDefault="1" showInStore="0" showInWebsite="0" canRestore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>beebots/address_autocomplete/enabled</config_path>
+                </field>
                 <field id="google_maps_api_key" translate="label" sortOrder="1" type="text" showInDefault="1" showInStore="0" showInWebsite="0" canRestore="0">
                     <label>Google Maps API Key</label>
                     <config_path>beebots/address_autocomplete/google_maps_api_key</config_path>
