@@ -1,4 +1,4 @@
-define(['jquery', 'prototype'], function ($jQuery) {
+define(['jquery', 'Magento_Sales/order/create/form', 'prototype'], function ($jQuery) {
 
     let componentForm = {
         subpremise: 'short_name',
