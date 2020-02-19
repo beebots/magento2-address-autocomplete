@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', 'prototype'], function ($jQuery) {
 
     let componentForm = {
         subpremise: 'short_name',
@@ -20,6 +20,15 @@ define(['jquery'], function ($) {
         country: 'order-billing_address_country_id',
         region: 'order-billing_address_region_id',
         postcode: 'order-billing_address_postcode',
+    };
+
+    let shippingForm = {
+        street1: 'order-shipping_address_street0',
+        street2: 'order-shipping_address_street1',
+        city: 'order-shipping_address_city',
+        country: 'order-shipping_address_country_id',
+        region: 'order-shipping_address_region_id',
+        postcode: 'order-shipping_address_postcode',
     };
 
     function getValueFromAddressComponent(addressComponent, addressType){
@@ -75,18 +84,38 @@ define(['jquery'], function ($) {
     }
 
     function fillFields(fields, addressBreakdown){
-        $.each(fields, function(key, fieldId){
+        $jQuery.each(fields, function(key, fieldId){
             if(key === 'region'){
-                $('#' + fieldId + ' option:contains(' + addressBreakdown[key] + ')').attr('selected', 'selected');
+                $jQuery('#' + fieldId + ' option:contains(' + addressBreakdown[key] + ')').attr('selected', 'selected');
             } else {
-                $('#' + fieldId).val(addressBreakdown[key]);
+                $jQuery('#' + fieldId).val(addressBreakdown[key]);
             }
 
         });
     }
 
+    function initReloadCallback(areaId, callback){
+        let previousCallbackName = $(areaId).callback;
+        let previousCallbackFunction = function(){};
+        if(previousCallbackName){
+            previousCallbackFunction = window.order[previousCallbackName];
+        }
+        let callbackName = 'beebots' + areaId + 'Callback';
+        $(areaId).callback = callbackName;
+        window.order[callbackName] = function(){
+            previousCallbackFunction();
+            callback();
+        }.bind(this);
+    }
+
     return {
         init: function () {
+            this.initBillingAddress();
+            this.initShippingAddress();
+            initReloadCallback('order-shipping_address', this.initShippingAddress.bind(this));
+        },
+
+        initBillingAddress: function(){
             let billingAddressField = document.getElementById('order-billing_address_street0');
             if (billingAddressField) {
                 let billingAutocomplete = new google.maps.places.Autocomplete(billingAddressField, {
@@ -101,11 +130,38 @@ define(['jquery'], function ($) {
             }
         },
 
-        fillBillingAddress: function (billingAutocomplete) {
-            let addressBreakdown = getPlaceAddressBreakdown(billingAutocomplete);
-            fillFields(billingForm, addressBreakdown);
+        initShippingAddress: function(){
+            let shippingAddressField = document.getElementById('order-shipping_address_street0');
+            if (shippingAddressField && !shippingAddressField.dataset.autocomplete_initialized) {
+                let shippingAutocomplete = new google.maps.places.Autocomplete(shippingAddressField, {
+                        componentRestrictions: {
+                            country: ['us'],
+                        },
+                        fields: ['address_component'],
+                        types: ['address']
+                    }
+                );
+                shippingAutocomplete.addListener('place_changed', this.fillShippingAddress.bind(this, shippingAutocomplete));
+                shippingAddressField.dataset.autocomplete_initialized = 'true';
+            }
         },
 
+        fillBillingAddress: function (addressAutocomplete) {
+            let addressBreakdown = getPlaceAddressBreakdown(addressAutocomplete);
+            fillFields(billingForm, addressBreakdown);
+            //if same billing/shipping checked, update shipping fields also
+            if(this.useBillingForShipping()){
+                fillFields(shippingForm, addressBreakdown);
+            }
+        },
 
+        fillShippingAddress: function (addressAutocomplete) {
+            let addressBreakdown = getPlaceAddressBreakdown(addressAutocomplete);
+            fillFields(shippingForm, addressBreakdown);
+        },
+
+        useBillingForShipping: function(){
+            return $jQuery('#order-shipping_same_as_billing').prop('checked');
+        }
     }
 });
