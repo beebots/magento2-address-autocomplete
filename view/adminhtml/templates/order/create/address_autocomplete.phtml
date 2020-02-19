@@ -1,0 +1,11 @@
+<?php
+/** @var $block BeeBots\AdminOrder\Block\Adminhtml\Order\Create\AddressAutocomplete */
+?>
+<script type="text/javascript">
+    require(['jquery', 'order-address-autocomplete'], function($, orderAddressAutocomplete){
+        $.getScript(
+            'https://maps.googleapis.com/maps/api/js?key=<?=$block->getApiKey()?>&libraries=places',
+            orderAddressAutocomplete.init.bind(orderAddressAutocomplete)
+        );
+    });
+</script>

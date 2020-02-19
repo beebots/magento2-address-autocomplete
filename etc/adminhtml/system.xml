@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="beebots" translate="label" sortOrder="950">
+            <label>Bee Bots</label>
+        </tab>
+        <section id="beebots" translate="label" type="text" sortOrder="95" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Address Autocomplete</label>
+            <tab>beebots</tab>
+            <resource>BeeBots_AddressAutocomplete::config</resource>
+            <group id="address_autocomplete" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Bee Bots Address Autocomplete Configuration</label>
+                <field id="google_maps_api_key" translate="label" sortOrder="1" type="text" showInDefault="1" showInStore="0" showInWebsite="0" canRestore="0">
+                    <label>Google Maps API Key</label>
+                    <config_path>beebots/address_autocomplete/google_maps_api_key</config_path>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
