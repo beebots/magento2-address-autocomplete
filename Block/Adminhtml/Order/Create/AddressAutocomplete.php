@@ -15,22 +15,22 @@ use Magento\Backend\Block\Template\Context;
 class AddressAutocomplete extends Template
 {
     /** @var BeeBotsConfig */
-    private $beebotsConfig;
+    private $beeBotsConfig;
 
     /**
      * AddressAutocomplete constructor.
      *
-     * @param BeeBotsConfig $beebotsConfig
+     * @param BeeBotsConfig $beeBotsConfig
      * @param Context $context
      * @param array $data
      */
     public function __construct(
-        BeeBotsConfig $beebotsConfig,
+        BeeBotsConfig $beeBotsConfig,
         Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->beebotsConfig = $beebotsConfig;
+        $this->beeBotsConfig = $beeBotsConfig;
     }
 
     /**
@@ -38,7 +38,7 @@ class AddressAutocomplete extends Template
      */
     public function getApiKey()
     {
-        return $this->beebotsConfig->getApiKey();
+        return $this->beeBotsConfig->getApiKey();
     }
 
     /**
@@ -48,6 +48,6 @@ class AddressAutocomplete extends Template
      */
     public function isAutocompleteEnabled()
     {
-        return $this->beebotsConfig->isAutocompleteEnabled();
+        return $this->beeBotsConfig->isAutocompleteEnabled();
     }
 }

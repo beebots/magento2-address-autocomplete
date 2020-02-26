@@ -17,7 +17,7 @@ class LayoutProcessor
     /**
      * LayoutProcessor constructor.
      *
-     * @param BeeBotsConfig $beebotsConfig
+     * @param BeeBotsConfig $beeBotsConfig
      */
     public function __construct(BeeBotsConfig $beeBotsConfig)
     {
