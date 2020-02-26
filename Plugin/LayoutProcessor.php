@@ -2,7 +2,7 @@
 
 namespace BeeBots\AddressAutocomplete\Plugin;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use BeeBots\AddressAutocomplete\Model\BeeBotsConfig;
 
 /**
  * Class LayoutProcessor
@@ -11,17 +11,17 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
  */
 class LayoutProcessor
 {
-    /** @var ScopeConfigInterface */
-    private $scopeConfig;
+    /** @var BeeBotsConfig */
+    private $beeBotsConfig;
 
     /**
      * LayoutProcessor constructor.
      *
-     * @param ScopeConfigInterface $scopeConfig
+     * @param BeeBotsConfig $beebotsConfig
      */
-    public function __construct(ScopeConfigInterface $scopeConfig)
+    public function __construct(BeeBotsConfig $beeBotsConfig)
     {
-        $this->scopeConfig = $scopeConfig;
+        $this->beeBotsConfig = $beeBotsConfig;
     }
 
     /**
@@ -36,27 +36,23 @@ class LayoutProcessor
         \Magento\Checkout\Block\Checkout\LayoutProcessor $subject,
         array $jsLayout
     ) {
+
+        if (! $this->beeBotsConfig->isAutocompleteEnabled()) {
+            unset(
+                $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
+                ['children']['shippingAddress']['children']['shippingAdditional']
+                ['children']['addressAutocomplete']
+            );
+            return $jsLayout;
+        }
+
         // Set the Google Places API Key for shipping address
         $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
-            ['children']['shippingAddress']['children']['shippingAdditional']
-            ['children']['addressAutocomplete']['config'] = [
-                'apiKey' => $this->getApiKey()
-            ];
-
-//        $jsLayout['components']['checkout']['children']['steps']['children']['billing-step']
-//        ['children']['payment']['children']['afterMethods']
-//        ['children']['addressAutocomplete']['config'] = [
-//            'apiKey' => $this->getApiKey()
-//        ];
+        ['children']['shippingAddress']['children']['shippingAdditional']
+        ['children']['addressAutocomplete']['config'] = [
+            'apiKey' => $this->beeBotsConfig->getApiKey(),
+        ];
 
         return $jsLayout;
-    }
-
-    /**
-     * Function: getApiKey
-     */
-    private function getApiKey()
-    {
-        return $this->scopeConfig->getValue('beebots/address_autocomplete/google_maps_api_key');
     }
 }

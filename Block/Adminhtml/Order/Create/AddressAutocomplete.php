@@ -3,9 +3,9 @@
 
 namespace BeeBots\AddressAutocomplete\Block\Adminhtml\Order\Create;
 
+use BeeBots\AddressAutocomplete\Model\BeeBotsConfig;
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class AddressAutocomplete
@@ -14,23 +14,23 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
  */
 class AddressAutocomplete extends Template
 {
-    /** @var ScopeConfigInterface */
-    private $scopeConfig;
+    /** @var BeeBotsConfig */
+    private $beebotsConfig;
 
     /**
      * AddressAutocomplete constructor.
      *
-     * @param ScopeConfigInterface $scopeConfig
+     * @param BeeBotsConfig $beebotsConfig
      * @param Context $context
      * @param array $data
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
+        BeeBotsConfig $beebotsConfig,
         Context $context,
         array $data = []
     ) {
-        $this->scopeConfig = $scopeConfig;
         parent::__construct($context, $data);
+        $this->beebotsConfig = $beebotsConfig;
     }
 
     /**
@@ -38,7 +38,7 @@ class AddressAutocomplete extends Template
      */
     public function getApiKey()
     {
-        return $this->scopeConfig->getValue('beebots/address_autocomplete/google_maps_api_key');
+        return $this->beebotsConfig->getApiKey();
     }
 
     /**
@@ -48,6 +48,6 @@ class AddressAutocomplete extends Template
      */
     public function isAutocompleteEnabled()
     {
-        return $this->scopeConfig->getValue('beebots/address_autocomplete/enabled');
+        return $this->beebotsConfig->isAutocompleteEnabled();
     }
 }
