@@ -17,6 +17,8 @@ define([
 
     return Component.extend({
 
+        initCount: 0,
+
         afterRender: function () {
             $.getScript(
                 'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey + '&libraries=places',
@@ -30,7 +32,16 @@ define([
 
         initShippingAddress: function () {
             let shippingAddressField = $(shippingForm['street1']).get(0);
-            addressAutocompleteCommon.initFieldAutocomplete(shippingAddressField, this.fillShippingAddress.bind(this));
+            if(!shippingAddressField){
+                this.initCount++;
+                if(this.initCount < 5){
+                    setTimeout(this.initShippingAddress.bind(this), 250);
+                } else {
+                    // give up
+                }
+            } else {
+                addressAutocompleteCommon.initFieldAutocomplete(shippingAddressField, this.fillShippingAddress.bind(this));
+            }
         },
 
         fillShippingAddress: function (addressAutocomplete) {
