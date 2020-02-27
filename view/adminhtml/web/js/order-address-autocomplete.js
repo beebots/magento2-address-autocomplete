@@ -1,10 +1,10 @@
 define([
         'jquery',
         'address-autocomplete-common',
-        'Magento_Sales/order/create/form',
-        'prototype'
+        'order-reload-helper',
+        'Magento_Sales/order/create/form'
     ],
-    function ($jQuery, addressAutocompleteCommon) {
+    function ($, addressAutocompleteCommon, orderReloadHelper) {
         'use strict';
 
         let billingForm = {
@@ -25,30 +25,18 @@ define([
             postcode: '#order-shipping_address_postcode',
         };
 
-        function initReloadCallback(areaId, callback) {
-            let previousCallbackName = $(areaId).callback;
-            let previousCallbackFunction = function () {
-            };
-            if (previousCallbackName) {
-                previousCallbackFunction = window.order[previousCallbackName];
-            }
-            let callbackName = 'beebots' + areaId + 'Callback';
-            $(areaId).callback = callbackName;
-            window.order[callbackName] = function () {
-                previousCallbackFunction();
-                callback();
-            }.bind(this);
-        }
-
         return {
             init: function () {
-                this.initBillingAddress();
-                this.initShippingAddress();
-                initReloadCallback('order-shipping_address', this.initShippingAddress.bind(this));
+                this._initBillingAddress();
+                this._initShippingAddress();
+                this._initShippingReload();
+                orderReloadHelper.onReloadAreas('beeAutocompleteShipping', this._initShippingAddress.bind(this));
+                orderReloadHelper.onReloadAreas('beeAutocompleteShippingReload', this._initShippingReload.bind(this));
+                orderReloadHelper.onReloadAreas('beeAutocompleteBilling', this._initBillingAddress.bind(this));
             },
 
-            initBillingAddress: function () {
-                let billingAddressField = $jQuery(billingForm['street1']).get(0);
+            _initBillingAddress: function () {
+                let billingAddressField = $(billingForm['street1']).get(0);
                 if (billingAddressField) {
                     let billingAutocomplete = new google.maps.places.Autocomplete(billingAddressField, {
                             componentRestrictions: {
@@ -62,8 +50,8 @@ define([
                 }
             },
 
-            initShippingAddress: function () {
-                let shippingAddressField = $jQuery(shippingForm['street1']).get(0);
+            _initShippingAddress: function () {
+                let shippingAddressField = $(shippingForm['street1']).get(0);
                 if (shippingAddressField && !shippingAddressField.dataset.autocomplete_initialized) {
                     let shippingAutocomplete = new google.maps.places.Autocomplete(shippingAddressField, {
                             componentRestrictions: {
@@ -76,6 +64,10 @@ define([
                     shippingAutocomplete.addListener('place_changed', this.fillShippingAddress.bind(this, shippingAutocomplete));
                     shippingAddressField.dataset.autocomplete_initialized = 'true';
                 }
+            },
+
+            _initShippingReload: function(){
+                orderReloadHelper.initAreaReloadCallback('beeAutocompleteInit', 'order-shipping_address', this._initShippingAddress.bind(this));
             },
 
             fillBillingAddress: function (addressAutocomplete) {
@@ -93,7 +85,7 @@ define([
             },
 
             useBillingForShipping: function () {
-                return $jQuery('#order-shipping_same_as_billing').prop('checked');
+                return $('#order-shipping_same_as_billing').prop('checked');
             }
         }
     }
