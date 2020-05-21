@@ -45,7 +45,7 @@ define([
         },
 
         fillShippingAddress: function (addressAutocomplete) {
-            let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete);
+            let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete, shippingForm.street1);
             addressAutocompleteCommon.fillFields(shippingForm, addressBreakdown);
         },
     });
