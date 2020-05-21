@@ -36,7 +36,7 @@ define([
             },
 
             _initBillingAddress: function () {
-                let billingAddressField = $(billingForm['street1']).get(0);
+                let billingAddressField = $(billingForm.street1).get(0);
                 if (billingAddressField) {
                     let billingAutocomplete = new google.maps.places.Autocomplete(billingAddressField, {
                             componentRestrictions: {
@@ -71,7 +71,7 @@ define([
             },
 
             fillBillingAddress: function (addressAutocomplete) {
-                let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete);
+                let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete, billingForm.street1);
                 addressAutocompleteCommon.fillFields(billingForm, addressBreakdown);
                 //if same billing/shipping checked, update shipping fields also
                 if (this.useBillingForShipping()) {
@@ -80,7 +80,7 @@ define([
             },
 
             fillShippingAddress: function (addressAutocomplete) {
-                let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete);
+                let addressBreakdown = addressAutocompleteCommon.getPlaceAddressBreakdown(addressAutocomplete, shippingForm.street1);
                 addressAutocompleteCommon.fillFields(shippingForm, addressBreakdown);
             },
 

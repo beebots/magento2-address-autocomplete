@@ -24,8 +24,15 @@ define(['jquery'], function ($) {
         callback(autocomplete);
     }
 
+    function findOptionElementByText(optionElements, optionTextToFind){
+        let filteredOptionElements = optionElements.filter(function(optionElement){
+            return optionElement.text.trim() === optionTextToFind;
+        });
+        return filteredOptionElements[0];
+    }
+
     return {
-        getPlaceAddressBreakdown: function (autocomplete) {
+        getPlaceAddressBreakdown: function (autocomplete, streetSelector) {
             let addressFieldBreakdown = {
                 street1: '',
                 street2: '',
@@ -38,7 +45,6 @@ define(['jquery'], function ($) {
             let streetNumberSubpremise = '';
             let streetNumber = '';
             let street = '';
-
             let place = autocomplete.getPlace();
 
             for (var i = 0; i < place.address_components.length; i++) {
@@ -67,14 +73,24 @@ define(['jquery'], function ($) {
                 }
             }
 
-            addressFieldBreakdown.street1 = streetNumberSubpremise + streetNumber + ' ' + street;
+            // Ignore the subpremise and street number. Just append what was in front of the street name before back in front
+            let fullChosenLocationString = $(streetSelector).val();
+            let originalCharactersBeforeStreet = fullChosenLocationString.split(street, 1);
+            if (originalCharactersBeforeStreet.length > 0) {
+                addressFieldBreakdown.street1 = String(originalCharactersBeforeStreet[0]) + street;
+            }
+
             return addressFieldBreakdown;
         },
 
         fillFields: function (fields, addressBreakdown) {
             $.each(fields, function (key, fieldSelector) {
                 if (key === 'region') {
-                    $(fieldSelector + ' option:contains(' + addressBreakdown[key] + ')').attr('selected', 'selected');
+                    let regionOptionElements = $(fieldSelector + ' option').get();
+                    let optionToSelect = findOptionElementByText(regionOptionElements, addressBreakdown[key]);
+                    if (optionToSelect) {
+                        $(optionToSelect).attr('selected', 'selected');
+                    }
                 } else {
                     $(fieldSelector).val(addressBreakdown[key]);
                 }
