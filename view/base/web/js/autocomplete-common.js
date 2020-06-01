@@ -45,6 +45,7 @@ define(['jquery'], function ($) {
             let streetNumberSubpremise = '';
             let streetNumber = '';
             let street = '';
+            let streetShortName = '';
             let place = autocomplete.getPlace();
 
             for (var i = 0; i < place.address_components.length; i++) {
@@ -56,6 +57,7 @@ define(['jquery'], function ($) {
                     streetNumber = value;
                 } else if (addressType === 'route') {
                     street = value;
+                    streetShortName = place.address_components[i]['short_name'];
                 } else if (addressType === 'administrative_area_level_1') {
                     addressFieldBreakdown.region = value;
                 } else if (addressType === 'sublocality_level_1') {
@@ -73,11 +75,22 @@ define(['jquery'], function ($) {
                 }
             }
 
-            // Ignore the subpremise and street number. Just append what was in front of the street name before back in front
+            // Ignore the returned subpremise and street number. They are not reliable for new addresses.
+            // Attempt to append what was in front of the street name in their selected option back in front of the returned street.
             let fullChosenLocationString = $(streetSelector).val();
-            let originalCharactersBeforeStreet = fullChosenLocationString.split(street, 1);
-            if (originalCharactersBeforeStreet.length > 0) {
+
+            // If we found the street, then split on it and append what was there to the front
+            if (fullChosenLocationString.indexOf(street) !== -1) {
+                let originalCharactersBeforeStreet = fullChosenLocationString.split(street, 1);
                 addressFieldBreakdown.street1 = String(originalCharactersBeforeStreet[0]) + street;
+            }  else if (fullChosenLocationString.indexOf(streetShortName) !== -1) {
+                // Try using the streetShortName instead
+                let originalCharactersBeforeStreet = fullChosenLocationString.split(streetShortName, 1);
+                addressFieldBreakdown.street1 = String(originalCharactersBeforeStreet[0]) + street;
+            } else {
+                // Fallback to the original logic using the sub-premise and the street number that were returned from google
+                let concatendatedStreetAddress = streetNumberSubpremise + streetNumber + ' ' + street;
+                addressFieldBreakdown.street1 = concatendatedStreetAddress.trim();
             }
 
             return addressFieldBreakdown;
