@@ -17,7 +17,7 @@
                                                         <item name="shippingAdditional" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <item name="addressAutocomplete" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">BeeBots_AddressAutocomplete/js/checkout-address-autocomplete</item>
+                                                                    <item name="component" xsi:type="string">BeeBots_AddressAutocomplete/js/address-autocomplete</item>
                                                                     <item name="template" xsi:type="string">BeeBots_AddressAutocomplete/autocomplete</item>
                                                                 </item>
                                                             </item>

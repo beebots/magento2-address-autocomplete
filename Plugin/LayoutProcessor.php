@@ -51,6 +51,12 @@ class LayoutProcessor
         ['children']['shippingAddress']['children']['shippingAdditional']
         ['children']['addressAutocomplete']['config'] = [
             'apiKey' => $this->beeBotsConfig->getApiKey(),
+            'street1' => '#shipping-new-address-form input[name="street[0]"]',
+            'street2' => '#shipping-new-address-form input[name="street[1]"]',
+            'city' => '#shipping-new-address-form input[name="city"]',
+            'country' => '#shipping-new-address-form select[name="country_id"]',
+            'region' => '#shipping-new-address-form select[name="region_id"]',
+            'postcode' => '#shipping-new-address-form input[name="postcode"]',
         ];
 
         return $jsLayout;

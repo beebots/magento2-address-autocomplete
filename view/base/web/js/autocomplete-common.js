@@ -113,7 +113,7 @@ define(['jquery'], function ($) {
 
         initFieldAutocomplete: function (addressField, callback) {
             try {
-                if (addressField && !addressField.dataset.autocomplete_initialized) {
+                if (addressField && !addressField.dataset.autocomplete_initialized && google) {
                     let addressAutocomplete = new google.maps.places.Autocomplete(addressField, {
                             componentRestrictions: {
                                 country: ['us'],
