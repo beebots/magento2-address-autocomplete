@@ -3,7 +3,7 @@
     "description": "Enable Google's Address Autocomplete on address forms throughout Magento",
     "require": {
         "php": ">=7.1.0",
-        "beebots/adminorderhelper": ">=0.1.0"
+        "beebots/magento2-admin-order-helper": "^1.0"
     },
     "type": "magento2-module",
     "version": "1.0.0",
