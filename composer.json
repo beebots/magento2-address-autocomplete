@@ -8,6 +8,11 @@
     "type": "magento2-module",
     "version": "1.0.0",
     "license": "MIT",
+    "support": {
+        "docs": "https://github.com/beebots/magento2-address-autocomplete",
+        "issues": "https://github.com/beebots/magento2-address-autocomplete/issues",
+        "source": "https://github.com/beebots/magento2-address-autocomplete"
+    },
     "autoload": {
         "files": [
             "registration.php"
