@@ -113,7 +113,13 @@ define(['jquery'], function ($) {
 
         initFieldAutocomplete: function (addressField, callback) {
             try {
-                if (addressField && !addressField.dataset.autocomplete_initialized) {
+                $(addressField).keydown(function(e){
+                    // https://stackoverflow.com/questions/11388251/google-autocomplete-enter-to-select
+                    if (e.keyCode === 13 && $('.pac-container:visible').length) {
+                        e.preventDefault();
+                    }
+                });
+                if (addressField && !addressField.dataset.autocomplete_initialized && google) {
                     let addressAutocomplete = new google.maps.places.Autocomplete(addressField, {
                             componentRestrictions: {
                                 country: ['us'],

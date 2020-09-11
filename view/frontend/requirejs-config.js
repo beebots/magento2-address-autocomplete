@@ -1,7 +1,7 @@
 var config = {
     map: {
         '*': {
-            'checkout-address-autocomplete': 'BeeBots_AddressAutocomplete/js/checkout-address-autocomplete'
+            'address-autocomplete': 'BeeBots_AddressAutocomplete/js/address-autocomplete',
         }
     },
     deps: [

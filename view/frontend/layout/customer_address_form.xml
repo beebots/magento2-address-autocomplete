@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="content">
+        <block class="BeeBots\AddressAutocomplete\Block\AddressAutocomplete" name="bee_address_autocomplete" after="customer_address_edit" template="BeeBots_AddressAutocomplete::address_autocomplete.phtml">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="address-autocomplete" xsi:type="array">
+                            <item name="component" xsi:type="string">address-autocomplete</item>
+                            <item name="config" xsi:type="array">
+                                <item name="street1" xsi:type="string">#street_1</item>
+                                <item name="street2" xsi:type="string">#street_2</item>
+                                <item name="city"  xsi:type="string">#city</item>
+                                <item name="country" xsi:type="string">#country</item>
+                                <item name="region" xsi:type="string">#region_id</item>
+                                <item name="postcode" xsi:type="string">#zip</item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </block>
+    </referenceContainer>
+</page>
