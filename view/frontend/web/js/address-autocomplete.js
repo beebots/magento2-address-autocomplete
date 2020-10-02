@@ -21,14 +21,18 @@ define([
         },
 
         afterRender: function () {
-            $.getScript(
-                'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey + '&libraries=places',
-                this.init.bind(this)
-            );
-        },
+            if (typeof google === 'undefined') {
+                window.google = {};
+                $.getScript(
+                    'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey + '&libraries=places',
+                    this.initAddressAutocomplete.bind(this)
+                );
 
-        init: function () {
+                return this;
+            }
+
             this.initAddressAutocomplete();
+            return this;
         },
 
         initAddressAutocomplete: function () {
