@@ -7,4 +7,4 @@ composer require beebots/magento2-address-autocomplete
 ```
 
 ## License
-[MIT](LICENSE.md)
+[MIT](LICENSE.txt)
